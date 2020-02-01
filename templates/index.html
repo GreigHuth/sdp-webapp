@@ -1,0 +1,25 @@
+<!doctype html>
+
+<html lang=en>
+    <head>
+        <title>BookBot</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="static/bootstrap.min.css" rel="stylesheet" media="screen">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    </head>
+    <body>
+        <div class="text-center">
+            <img src="{{url_for('static', filename='logo.png')}}" alt="logo" class="rounded mx-auto d-block" width=70% height=70%>
+            <p class="text-center"> BookBot is a book delivery robot.</p>
+            <a href="{{url_for ('login') }}" class="btn btn-info" role="button">Login</a>
+        </div>
+
+    </body>
+
+
+
+
+
+
+</html>

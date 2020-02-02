@@ -4,14 +4,38 @@
     <link href="https://fonts.googleapis.com/css?family=Arvo&display=swap" rel="stylesheet">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="static/bootstrap.min.css" rel="stylesheet" media="screen">
+    <style>
+      h1 {
+        position: absolute;
+        left: 450px;
+        top: 120px;
+      }
+      h2 {
+        position: absolute;
+        left: 500px;
+        top: 300px;
+      }
+      input {
+        position: absolute;
+        left: 700px;
+        top: 270px;
+      }
+      h3 {
+        position: absolute;
+        left: 90px;
+        top: 550px;
+      }
+      </style>
   </head>
   <body>
     <div class="container">
+      <img src="{{url_for('static', filename='logo.png')}}" class="rounded mx-auto d-block" width=15% height=15%/>
       <h1>Book Grabbing Demo</h1>
-      <h2>Click the button to do something:</h2>
+      <h2>Give it a try:</h2>
+      <h3>Help: This "Grab" button is going to remotely control the robot to pick up a book</h3>
       <br>
       <form action="" method="post">
-        <input class="btn btn-default" type="submit" value="Grab">
+        <input class="btn btn-default" type="submit"  style= "color: blue;font-size: 50px" value="Grab">
       </form>
       {% if error %}
         <p class="error"><strong>Error:</strong> {{ error }}

@@ -1,36 +1,25 @@
-<html>
+<!doctype html>
+
+
+<html lang=en>
   <head>
     <title>BB Control</title>
     <link href="https://fonts.googleapis.com/css?family=Arvo&display=swap" rel="stylesheet">
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="static/bootstrap.min.css" rel="stylesheet" media="screen">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
   </head>
-  <style>
-      h2 {
-        position: absolute;
-        left: 500px;
-        top: 300px;
-      }
-      input {
-        position: absolute;
-        left: 700px;
-        top: 270px;
-      }
-      h3 {
-        position: absolute;
-        left: 90px;
-        top: 550px;
-      }
-  </style>
   <body>
-    <div class="container">
-      <img src="{{url_for('static', filename='logo.png')}}" class="rounded mx-auto d-block" alt="logo" width=20% height=20%/>
-      <h1 class="text-center">Book Grabbing Demo</h1>
+    <div class="text-center">
+      <img src="{{url_for('static', filename='logo.png')}}" alt="logo" class="rounded mx-auto d-block" width=30% height=30%>
+      <h1>Book Grabbing Demo</h1>
       <h2>Give it a try:</h2>
       <h3>Help: This "Grab" button is going to remotely control the robot to pick up a book</h3>
       <br>
       <form action="" method="post">
-        <input class="btn btn-primary" type="button"  style= "font-size: 50px" value="Grab">
+        <input class="btn btn-info" type="submit"  style= "font-size: 50px" value="Grab">
       </form>
       {% if error %}
         <p class="error"><strong>Error:</strong> {{ error }}

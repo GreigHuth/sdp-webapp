@@ -1,20 +1,18 @@
 # import the Flask class from the flask module
 from flask import Flask, render_template, redirect, url_for, request
 import paramiko
+import sqlite3 
 
 # create the application object
 app = Flask(__name__)
 ssh_client = None
 
-# use decorators to link the function to a url
+#landing page
 @app.route('/')
 def home():
-    return render_template('index.html')  # return a string
+    return render_template('index.html') 
 
-@app.route('/welcome')
-def welcome():
-    return render_template('welcome.html')  # render a template
-
+#book grabbing page
 @app.route('/control', methods=['GET', 'POST'])
 def control():
     if(request.method == 'GET'):
@@ -29,17 +27,27 @@ def control():
         #return "stdin: " + str(stdin) + "\n" + "stdout: " + str(stdout) + "stderr" + str(stderr)
         return "Book Grabbing in progress."
 
-# Route for handling the login page logic
+# login page
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     error = None
     if request.method == 'POST':
-        if request.form['username'] != 'admin' or request.form['password'] != 'admin':
+        #containers for username and password
+        un  = request.form['username']
+        pwd = request.form['password']
+
+        #connect to database and get users
+        conn = sqlite3.connect("webapp.db")
+        cursor = conn.execute('select * from users')
+        users = [user[0] for user in cursor.description]
+
+
+        if un != 'admin' or pwd != 'admin':
             error = 'Invalid Credentials. Please try again.'
         else:
-            return redirect(url_for('home'))
+            return redirect(url_for('control'))
     return render_template('login.html', error=error)
 
-# start the server with the 'run()' method
+#runs the code
 if __name__ == '__main__':
     app.run(debug=True)

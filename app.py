@@ -45,8 +45,21 @@ def login():
         if un != 'admin' or pwd != 'admin':
             error = 'Invalid Credentials. Please try again.'
         else:
-            return redirect(url_for('control'))
+            return redirect(url_for('search'))
     return render_template('login.html', error=error)
+
+# book searching page
+@app.route('/search', methods=['GET', 'POST'])
+def search():
+    if request.method == 'POST':
+         un  = request.form['keyword']
+         return redirect(url_for('books'))
+    return render_template('booksearching.html', title='Find Books')
+
+# booklist page
+@app.route('/books')
+def books():
+    return render_template('books.html', title='Book List')
 
 #runs the code
 if __name__ == '__main__':

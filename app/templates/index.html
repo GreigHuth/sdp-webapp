@@ -1,0 +1,12 @@
+
+<!-- jinja stuff, head is in base.html, just put page content here-->
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="text-center">
+        <img src="{{url_for('static', filename='logo.png')}}" alt="logo" class="rounded mx-auto d-block" width=40% height=40%>
+        <p class="text-center"> BookBot is a book delivery robot.</p>
+        <a href="{{url_for ('login') }}" class="btn btn-info" role="button">Login</a>
+    </div>
+
+{% endblock %}

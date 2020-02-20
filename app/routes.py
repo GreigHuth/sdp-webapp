@@ -73,23 +73,28 @@ def signup():
 @login_required
 def demo2():
 
-    ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    ssh_client.connect(hostname='pichu', username='pi', password='r00t')
+    #ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+    #ssh_client.connect(hostname='pichu', username='pi', password='r00t')
 
     if request.method == "POST":
         if   'id_demo' in request.form:
-            stdin, stdout, stderr=ssh_client.exec_command('command/that/runs/book/id')
+            pass
+            #stdin, stdout, stderr=ssh_client.exec_command('command/that/runs/book/id')
             #TODO run book id script
         
         elif 'grab_demo' in request.form:
-            stdin, stdout, stderr=ssh_client.exec_command('command/that/runs/grabbing')
+            pass
+            #stdin, stdout, stderr=ssh_client.exec_command('command/that/runs/grabbing')
             #TODO run book grabbing script
 
         elif 'navi_demo' in request.form:
-            stdin, stdout, stderr=ssh_client.exec_command('command/that/runs/nav')
+            pass
+            #stdin, stdout, stderr=ssh_client.exec_command('command/that/runs/nav')
             #TODO run navigation demo
 
-    return render_template('demo2.html', title = 'demo 2')
+        return render_template('demo2.html', title = 'demo 2')
+    else:
+        return render_template('demo2.html', title = 'demo 2')
 
 
 @app.route('/home', methods=['GET', 'POST'])#might not need post

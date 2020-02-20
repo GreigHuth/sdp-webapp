@@ -1,0 +1,50 @@
+{%extends "base.html"%}
+{%block content%}
+<div class="container">
+
+<div class="row">
+    <div class="col-lg-4">
+        <div class="card " style="width: 18rem;height: 18rem;">
+            <img class="card-img-top" src="path/to/demo2/img" alt="Demo 2">
+            <div class ="card-body">
+                <h5 class="card-title"> Demo 2 Page</h5>
+                <p class="card-text"> 
+                    Demo 2 will demonstrate the LIDAR navigation for the first time and also 
+                    show our progress in the book detection and book grabbing systems. 
+                </p>
+                <a href="{{url_for('demo2')}}" class="btn btn-primary"> Go to demo 2.</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="card" style="width: 18rem;height: 18rem;">
+            <img class="card-img-top" src="path/to/pick/up/img" alt="Pick Up a Book">
+            <div class ="card-body">
+                <h5 class="card-title"> Pick Up a reserved book(WIP)</h5>
+                <p class="card-text"> 
+                      This will give users the functionality to pick up a reserved book.  
+                </p>
+                    <a href="{{url_for('pickup')}}" class="btn btn-primary"> (WIP).</a>
+                </div>
+            </div>
+    </div>
+
+    <div class="col-lg-4">
+            <div class="card" style="width: 18rem;height: 18rem;">
+                <img class="card-img-top" src="path/to/reserve/img" alt="Reserve a Book">
+                <div class ="card-body">
+                    <h5 class="card-title"> Reserve a book(WIP)</h5>
+                    <p class="card-text"> 
+                          This will give users the functionality to reserve a book.  
+                    </p>
+                        <a href="{{url_for('reserve')}}" class="btn btn-primary"> (WIP).</a>
+                    </div>
+                </div>
+        </div>
+
+
+
+</div>
+</div>
+{%endblock%}

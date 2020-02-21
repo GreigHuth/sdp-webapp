@@ -3,7 +3,7 @@ import paramiko
 from app import app, db, ssh_client
 from werkzeug.urls import url_parse
 from flask_login import current_user, login_user, logout_user, login_required
-from app.models import User
+from app.models import User, Book
 from app.forms import LoginForm, SignupForm
 
 
@@ -76,25 +76,30 @@ def demo2():
     #ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     #ssh_client.connect(hostname='pichu', username='pi', password='r00t')
 
+    #gets book names 
+    books = db.session.query(Book.name).all()
+    books = [book[0] for book in books]
+
     if request.method == "POST":
-        if   'id_demo' in request.form:
+        if   'grab' in request.form:
+            print "grab"
             pass
-            #stdin, stdout, stderr=ssh_client.exec_command('command/that/runs/book/id')
-            #TODO run book id script
+            
         
-        elif 'grab_demo' in request.form:
+        elif 'nav' in request.form:
+            print "nav"
             pass
-            #stdin, stdout, stderr=ssh_client.exec_command('command/that/runs/grabbing')
-            #TODO run book grabbing script
+            
 
-        elif 'navi_demo' in request.form:
+        elif 'id' in request.form:
+            book_chosen = request.form["book"]
+            #TODO send this string to the id script
             pass
-            #stdin, stdout, stderr=ssh_client.exec_command('command/that/runs/nav')
-            #TODO run navigation demo
+            
 
-        return render_template('demo2.html', title = 'demo 2')
+        return render_template('demo2.html', title = 'demo 2', books=books)
     else:
-        return render_template('demo2.html', title = 'demo 2')
+        return render_template('demo2.html', title = 'demo 2', books=books)
 
 
 @app.route('/home', methods=['GET', 'POST'])#might not need post

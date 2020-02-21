@@ -27,12 +27,14 @@ class User(UserMixin, db.Model):
 #SQL Schema for Book Table
 class Book(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(140))
-    author = db.Column(db.String(64))
-    holder = db.Column(db.Integer, db.ForeignKey('user.id'))
+    name = db.Column(db.String(140), unique=True,)
+    author = db.Column(db.String(64)) 
+    label = db.Column(db.String(16), unique=True)#LOC label on the book
+    holder = db.Column(db.Integer, db.ForeignKey('user.id'))# id of the user that has the book
+    shelf = db.Column(db.Integer)# shelf the book is on
 
     def __repr__(self):
-        return '<Post {}>'.format(self.name)
+        return '<Book {}>'.format(self.name)
 #gets unique session id for the users that logged in
 @login.user_loader
 def load_user(id):

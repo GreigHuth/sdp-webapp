@@ -1,10 +1,12 @@
 {% extends "base.html" %}
 {% block content %}
 <div class="container">  
-    <div class="card text-center">
+    <div class="card text-white text-center bg-success mb-3">
         <div class="card-header">Book Grabbing Demo</div>
             <div class="card-body" >
-                <p class="card-text">This runs the grabbing demo. The demo will blahblahblahblah.</p>
+                <p class="card-text">
+                    This runs the grabbing demo. 
+                    The demo will show our improved book grabbing system.</p>
                 <form action="" method="POST">
                     <input type="submit" value="Run Demo" name ="grab" class="btn btn-primary">
                 </form>
@@ -14,12 +16,17 @@
 </div>
 
 <div class="container">
-    <div class="card text-center">
+    <div class="card text-white bg-danger mb-3 text-center">
         <div class="card-header">Navigation Demo</div>
             <div class="card-body" >
-                <p class="card-text">This runs the navigation demo. The demo will blahblahblahblah.</p>
-                <form action="" method="POST">
-                    <input type="submit" value="Run Demo" name ="grab" class="btn btn-primary">
+                <p class="card-text">
+                    This runs the navigation demo. 
+                    The demo will debut the LIDAR navigation 
+                    functionality of BookBot. Click the button and BookBot will then navigate 
+                    to predefined coordinates.
+                </p>
+                <form action="" method="POST">                
+                    <input type="submit" value="Run Demo" name ="nav" class="btn btn-primary">       
                 </form>
             </div>
         </div>
@@ -27,12 +34,21 @@
 </div>
 
 <div class="container">
-    <div class="card text-center">
+    <div class="card text-white bg-info mb-3 text-center">
         <div class="card-header">Book Identification Demo</div>
             <div class="card-body" >
-                <p class="card-text">This runs the book id demo. The demo will blahblahblahblah.</p>
+                <p class="card-text">
+                    This runs the book id demo. The demo will show the 
+                    progress made in the book identification. Please select which book 
+                    you would like to be identified.
+                </p>
                 <form action="" method="POST">
+                    <select name="book" method="GET" action="">
+                        {%for book in books %}
+                            <option value="{{book}}">{{book}}</option>
+                        {%endfor%}
                     <input type="submit" value="Run Demo" name ="id" class="btn btn-primary">
+                    </select>
                 </form>
             </div>
         </div>

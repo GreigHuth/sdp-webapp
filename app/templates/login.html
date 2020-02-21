@@ -2,6 +2,7 @@
 {% import 'bootstrap/wtf.html' as wtf %}
 
 {% block content %}
+<div class="container">
     <h1>Log In</h1>
     <div class="row">
         <div class="col-md-4">
@@ -10,6 +11,8 @@
     </div>
     <br>
     <p>New User? <a href="{{ url_for('signup') }}">Click to sign up!</a></p>
+</div>
+    
 {% endblock %}
     
 

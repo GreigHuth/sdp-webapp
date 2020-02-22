@@ -73,31 +73,46 @@ def signup():
 @login_required
 def demo2():
 
-    #ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-    #ssh_client.connect(hostname='pichu', username='pi', password='r00t')
+    
 
     #gets book names 
     books = db.session.query(Book.name).all()
     books = [book[0] for book in books]
 
     if request.method == "POST":
+        #connect to BB with ssh, plan to use sockets or something better in the future
+        ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        ssh_client.connect(hostname='pichu', username='pi', password='turtlebot')
+
+        #container for demo script
+        demo_script = ""
+
         if   'grab' in request.form:
-            print "grab"
-            pass
+            flash("Grabbing demo running...")
+
+            demo_script = "path/to/grabbing/script"
+            
             
         
         elif 'nav' in request.form:
-            print "nav"
-            pass
+            flash("Navigation demo running...")
+
+            demo_script = "path/to/nav/script"
+            
             
 
         elif 'id' in request.form:
+            flash("Identification demo running...")
+
             book_chosen = request.form["book"]
-            #TODO send this string to the id script
-            pass
+            demo_script = "path/to/id/script"
             
+            
+        stdin,stdout,stderr=ssh_client.exec_command(demo_script)
 
         return render_template('demo2.html', title = 'demo 2', books=books)
+    
+    #if not POST then just return the page
     else:
         return render_template('demo2.html', title = 'demo 2', books=books)
 

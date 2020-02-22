@@ -21,4 +21,5 @@ class SignupForm(FlaskForm):
         if user is not None:
             raise ValidationError('Please use a different username.')
 
+
     

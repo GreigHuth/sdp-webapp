@@ -69,64 +69,44 @@ def signup():
     return render_template('signup.html', title = 'Sign up', form=form)
 
 #code for second demo remove before 3rd demo
-@app.route('/demo', methods=['GET','POST'])
+@app.route('/get', methods=['GET','POST'])
 @login_required
-def demo2():
+def get():
 
-    
 
     #gets book names 
-    books = db.session.query(Book.name).all()
+    books = db.session.query(Book.title).all()
     books = [book[0] for book in books]
 
     if request.method == "POST":
         #connect to BB with ssh, plan to use sockets or something better in the future
         ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-        ssh_client.connect(hostname='pichu', username='pi', password='turtlebot')
+        ssh_client.connect(hostname='jigglypuff', username='pi', password='r00t')
 
         #container for demo script
         demo_script = ""
-
-        if   'grab' in request.form:
-            flash("Grabbing demo running...")
-
-            demo_script = "path/to/grabbing/script"
             
-            
-        
-        elif 'nav' in request.form:
-            flash("Navigation demo running...")
-
-            demo_script = "path/to/nav/script"
-            
-            
-
-        elif 'id' in request.form:
+        if 'id' in request.form:
             flash("Identification demo running...")
 
-            book_chosen = request.form["book"]
-            demo_script = "path/to/id/script"
-            
+            book_chosen = str(request.form["book"])
+            #gets the label corresponding to the chosen book, its ugly, need to fix this
+            label_chosen = db.session.query(Book.label).filter(Book.title==book_chosen).first().label
+            demo_script = "rm $HOME/vision/BB-Book-Identification/scripts/label.txt; echo '%s' >> $HOME/vision/BB-Book-Identification/scripts/label.txt" % label_chosen
             
         stdin,stdout,stderr=ssh_client.exec_command(demo_script)
 
-        return render_template('demo2.html', title = 'demo 2', books=books)
+        return render_template('get.html', title = 'Get Books', books=books)
     
     #if not POST then just return the page
     else:
-        return render_template('demo2.html', title = 'demo 2', books=books)
+        return render_template('get.html', title = 'Get Book', books=books)
 
 
 @app.route('/home', methods=['GET', 'POST'])#might not need post
 @login_required
 def home(): 
     return render_template('home.html', title = 'Home Page')
-
-#TODO all of this
-@app.route('/get', methods=['GET', 'POST'])
-@login_required
-def get():
-    return render_template('pickup.html', title = "Get Book")
 
 
 @app.route('/pickup', methods=['GET', 'POST'])

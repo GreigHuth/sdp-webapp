@@ -19,6 +19,8 @@ class User(UserMixin, db.Model):
     #returns true if the passwords match, false otherwise
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
+
+    
         
     #describes how to print the class
     def __repr__(self):
@@ -27,14 +29,21 @@ class User(UserMixin, db.Model):
 #SQL Schema for Book Table
 class Book(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(140), unique=True,)
+    title = db.Column(db.String(140), unique=True,)
     author = db.Column(db.String(64)) 
     label = db.Column(db.String(16), unique=True)#LOC label on the book
+    subject = db.Column(db.String(64))
     holder = db.Column(db.Integer, db.ForeignKey('user.id'))# id of the user that has the book
     shelf = db.Column(db.Integer)# shelf the book is on
 
     def __repr__(self):
         return '<Book {}>'.format(self.name)
+
+    def get_label(self, book):
+        label = self.query.filter_by(name=book).first()
+        return label.label
+
+
 #gets unique session id for the users that logged in
 @login.user_loader
 def load_user(id):

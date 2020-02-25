@@ -1,4 +1,26 @@
 {% extends "base.html" %}
-
 {% block content %}
-{%endblock%}
+
+<div class="container">
+    <div class="card text-white bg-info mb-3 text-center">
+        <div class="card-header">Book Identification Demo</div>
+            <div class="card-body" >
+                <p class="card-text">
+                    This runs the book id demo. The demo will show the 
+                    progress made in the book identification. Please select which book 
+                    you would like to be identified.
+                </p>
+                <form action="" method="POST">
+                    <select name="book" method="GET" action="">
+                        {%for book in books %}
+                            <option value="{{book}}">{{book}}</option>
+                        {%endfor%}
+                    <input type="submit" value="Run Demo" name ="id" class="btn btn-primary">
+                    </select>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+{% endblock %}

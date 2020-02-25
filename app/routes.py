@@ -87,9 +87,10 @@ def get():
         demo_script = ""
             
         if 'id' in request.form:
-            flash("Identification demo running...")
+            
 
             book_chosen = str(request.form["book"])
+            flash("Book Chosen - %s" % book_chosen)
             #gets the label corresponding to the chosen book, its ugly, need to fix this
             label_chosen = db.session.query(Book.label).filter(Book.title==book_chosen).first().label
             demo_script = "rm $HOME/vision/BB-Book-Identification/scripts/label.txt; echo '%s' >> $HOME/vision/BB-Book-Identification/scripts/label.txt" % label_chosen

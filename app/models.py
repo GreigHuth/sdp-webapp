@@ -1,7 +1,9 @@
-from app import db
-from app import login
-from werkzeug.security import generate_password_hash, check_password_hash
+from hashlib import md5
+from flask import current_app, url_for
 from flask_login import UserMixin
+from werkzeug.security import generate_password_hash, check_password_hash
+from app import db, login
+#from app.search import add_to_index, remove_from_index, query_index
 
 #each class represents a table in the database
 
@@ -20,7 +22,8 @@ class User(UserMixin, db.Model):
     def check_password(self, password):
         return check_password_hash(self.password_hash, password)
 
-    
+    def avatar(self):
+        return md5(self.username.encode('utf8')).hexdigest
         
     #describes how to print the class
     def __repr__(self):

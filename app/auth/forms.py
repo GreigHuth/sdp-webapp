@@ -1,11 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField, SubmitField
-from wtforms.validators import ValidationError, DataRequired, EqualTo
+from wtforms.validators import ValidationError, DataRequired, Email, EqualTo
 from app.models import User
-
-class SearchForm(FlaskForm):
-    search = StringField('search', validators=[DataRequired()])
-    submit = SubmitField('Search')
 
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
@@ -24,6 +20,3 @@ class SignupForm(FlaskForm):
         user = User.query.filter_by(username=username.data).first()
         if user is not None:
             raise ValidationError('Please use a different username.')
-
-
-    

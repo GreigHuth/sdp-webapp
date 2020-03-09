@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <svg data-jdenticon-value={{user.avatar()}} width="120" height="120">
+    Fallback text or image for browsers not supporting inline svg.
+    </svg>
+    <h1>User: {{ user.username }}</h1>
+{% endblock %}

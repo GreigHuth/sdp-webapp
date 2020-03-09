@@ -4,13 +4,18 @@
 {% block content %}
 
 <div class="container">
-    <form action="" method="post" class="form" role="form">
+    
+    <form action="" method="post" name="title" class="form" role="form">
         <d1>
-            {{render_field(form.search, class='form-control', placeholder="Search here")}} 
+            {{wtf.form_field(form.searchTitle, class='form-control', placeholder="Search here")}} 
+            {{wtf.form_field(form.searchAuthor, class='form-control', placeholder="Search here")}}
+            {{wtf.form_field(form.searchGenre, class='form-control', placeholder="Search here")}}
         </d1>
         <p>
             <input type=submit class ='btn btn-warning btn-block'>        
         </p>
     </form>
+
+
 </div>
 {% endblock %}

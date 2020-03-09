@@ -1,27 +1,40 @@
-from flask import Flask
-from config import Config
+
+from flask import Flask, request, current_app
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_bootstrap import Bootstrap
-import paramiko
+from elasticsearch import Elasticsearch
+from config import Config
 
-#init app and config
-app = Flask(__name__)
-app.config.from_object(Config)
+db = SQLAlchemy()
+migrate = Migrate()
+login = LoginManager()
+login.login_view = 'auth.login'
+bootstrap = Bootstrap()
 
-#init flask-bootstrap
-bootstrap = Bootstrap(app)
 
-#init SSH client
-ssh_client = paramiko.SSHClient()
+def create_app(config_class=Config):
+    app = Flask(__name__)
+    app.config.from_object(config_class)
 
-#init Flask Login
-login = LoginManager(app)
-login.login_view = 'login'
+    db.init_app(app)
+    migrate.init_app(app, db)
+    login.init_app(app)
+    bootstrap.init_app(app)
+    app.elasticsearch = Elasticsearch([app.config['ELASTICSEARCH_URL']]) \
+        if app.config['ELASTICSEARCH_URL'] else None
 
-#init database
-db = SQLAlchemy(app)
-migrate = Migrate(app, db)
-from app import routes, models
 
+    from app.auth import bp as auth_bp
+    app.register_blueprint(auth_bp, url_prefix='/auth')
+
+    from app.main import bp as main_bp
+    app.register_blueprint(main_bp)
+
+
+    return app
+
+
+
+from app import models

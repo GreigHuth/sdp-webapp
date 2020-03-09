@@ -2,6 +2,8 @@ import os
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 class Config(object):
+    MAX_SEARCH_RESULTS = 50
+
     #Key config
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'bums'
 

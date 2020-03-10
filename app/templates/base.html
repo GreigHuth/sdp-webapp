@@ -30,9 +30,8 @@
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav">
                     <a class="nav-item nav-link" href="{{url_for('main.home')}}">Home</a>
-                    <a class="nav-item nav-link" href="{{url_for('main.search')}}" aria-disabled="true">Get Book(WIP)</a>
+                    <a class="nav-item nav-link" href="{{url_for('main.search')}}" aria-disabled="true">Search Books</a>
                     <a class="nav-item nav-link" href="{{url_for('main.pickup')}}" aria-disabled="true">Pick Up (WIP)</a>
-                    <a class="nav-item nav-link" href="{{url_for('main.reserve')}}" aria-disabled="true">Reserve(WIP)</a>
                     {%if current_user.is_anonymous%}
                     <a class="nav-item nav-link" href="{{url_for('auth.login')}}">Login</a>
                     {% else %}

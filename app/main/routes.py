@@ -50,11 +50,14 @@ def search():
 def search_results(query):
      
 
-
-    #get all the books with titles similar to the statement
+    #get books from database
     booksDB = db.session.query(Book).all()
     search_result = dict({})
+
     for book in booksDB:
+
+        #tokenises the book attributes and uses the levenschtein distance to give each book a score for 
+        #   how similar it is to the query
         score = fuzz.token_sort_ratio(book.title, query) + fuzz.token_sort_ratio(book.author, query) + fuzz.token_sort_ratio(book.subject, query)
         search_result[book] = score
 
@@ -65,7 +68,6 @@ def search_results(query):
     for elem in search_result:
         books.append(elem[0])
         
-    
     
     return render_template('search_results.html', books = books[:5])
 

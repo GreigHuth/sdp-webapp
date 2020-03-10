@@ -1,4 +1,10 @@
 {%extends "base.html"%}
 {% block content %}
+    
+    {% for book in books %}
+        <br> 
+        {% include '_book.html' %}
+        <br>
+    {%endfor%}
 
-{% endblock %}}
+{% endblock %}

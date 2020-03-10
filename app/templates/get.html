@@ -1,15 +1,11 @@
 {% extends "base.html" %}
 {% import 'bootstrap/wtf.html' as wtf %}
-{% from "_formhelpers.html" import render_field %}
 {% block content %}
 
 <div class="container">
-    
     <form action="" method="post" name="title" class="form" role="form">
         <d1>
-            {{wtf.form_field(form.searchTitle, class='form-control', placeholder="Search here")}} 
-            {{wtf.form_field(form.searchAuthor, class='form-control', placeholder="Search here")}}
-            {{wtf.form_field(form.searchGenre, class='form-control', placeholder="Search here")}}
+            {{wtf.form_field(form.q, class='form-control', placeholder="Search here")}} 
         </d1>
         <p>
             <input type=submit class ='btn btn-warning btn-block'>        

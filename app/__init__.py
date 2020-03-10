@@ -1,4 +1,3 @@
-
 from flask import Flask, request, current_app
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -7,12 +6,12 @@ from flask_bootstrap import Bootstrap
 from elasticsearch import Elasticsearch
 from config import Config
 
+#initialise all the libraries the webapp needs
 db = SQLAlchemy()
 migrate = Migrate()
 login = LoginManager()
 login.login_view = 'auth.login'
 bootstrap = Bootstrap()
-
 
 def create_app(config_class=Config):
     app = Flask(__name__)
@@ -25,7 +24,7 @@ def create_app(config_class=Config):
     app.elasticsearch = Elasticsearch([app.config['ELASTICSEARCH_URL']]) \
         if app.config['ELASTICSEARCH_URL'] else None
 
-
+    #load all the blueprints 
     from app.auth import bp as auth_bp
     app.register_blueprint(auth_bp, url_prefix='/auth')
 

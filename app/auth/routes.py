@@ -22,7 +22,7 @@ def login():
         # if credentials are invalid then prompt for correct credentials
         if user is None or not user.check_password(form.password.data):
             flash('Invalid Username or password')
-            return redirect(url_for('login'))
+            return redirect(url_for('auth.login'))
 
         #actually does the user login
         login_user(user, remember=form.remember_me.data)
@@ -35,7 +35,7 @@ def login():
             next_page = url_for('main.home') 
         return redirect(next_page) 
     
-    return render_template('login.html', title ='Sign In', form=form)
+    return render_template('auth/login.html', title ='Sign In', form=form)
 
 
 @bp.route('/logout')
@@ -61,5 +61,5 @@ def signup():
         flash('Successfully registered!')
         return redirect(url_for('login'))
 
-    return render_template('signup.html', title = 'Sign up', form=form)
+    return render_template('auth/signup.html', title = 'Sign up', form=form)
 

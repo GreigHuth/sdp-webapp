@@ -1,6 +1,7 @@
 
 from flask import render_template, flash, redirect, url_for, request, g, current_app
 from flask_login import current_user, login_required
+from sqlalchemy import or_
 from app import db
 from app.main.forms import  get_SearchForm
 from app.models import User, Book
@@ -23,35 +24,30 @@ def user(username):
     return render_template('user.html', user=user)
 
 
-
 @bp.route('/get', methods=['GET','POST'])
 @login_required
 def get():
 
     form = get_SearchForm()
-
     if request.method == 'POST':  
-        title  = form.searchTitle.data
-        author = form.searchAuthor.data
-        genre = form.searchGenre.data
+        query = form.q.data
+        print (query)
 
-        return redirect(url_for('main.get_search', title=title, author= author, genre=genre))
-   
+        return redirect(url_for('main.get_search', query=query))
+
     return render_template('get.html', title = 'Get Book', form=form)
 
 
-@bp.route('/get/search/<form>', methods=['GET', 'POST'])
+@bp.route('/get/search/<query>', methods=['GET', 'POST'])
 @login_required
-def get_search(title, author, genre):
+def get_search(query):
      
 
-    print(title)
-
     #search the database for book titles 
-    search = "%{}%".format(title)
+    search = "%{}%".format(query)
 
     #get all the books with titles similar to the statement
-    books = db.session.query(Book).filter(Book.title.like(search)).all()
+    books = db.session.query(Book).all()
     print (books)
 
     return render_template('get_search.html', books = books)
@@ -73,3 +69,8 @@ def pickup():
 @login_required
 def reserve():
     return render_template('reserve.html', title="Reserve")
+
+@bp.before_app_request
+def before_request():
+    if current_user.is_authenticated:
+        g.search_form = get_SearchForm()

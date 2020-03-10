@@ -7,6 +7,7 @@ class Config(object):
     MAX_SEARCH_RESULTS = 50
 
     ELASTICSEARCH_URL = "http://localhost:9200"
+    WHOOSH_BASE = os.path.join(basedir, 'search.db')
 
     #Key config
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'bums'
@@ -14,4 +15,4 @@ class Config(object):
     #db config
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
         'sqlite:///' + os.path.join(basedir, 'app.db')
-    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SQLALCHEMY_TRACK_MODIFICATIONS = True

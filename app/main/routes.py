@@ -3,10 +3,12 @@ from flask import render_template, flash, redirect, url_for, request, g, current
 from flask_login import current_user, login_required
 from sqlalchemy import or_
 from app import db
+import re
 from app.main.forms import  get_SearchForm
 from app.models import User, Book
 from app.main import bp
-
+from fuzzywuzzy import fuzz
+from jellyfish import levenshtein_distance as ld 
 
 @bp.route('/')
 @bp.route('/index')
@@ -23,34 +25,49 @@ def user(username):
 
     return render_template('user.html', user=user)
 
-
-@bp.route('/get', methods=['GET','POST'])
+@bp.route('/book/<isbn>')
 @login_required
-def get():
+def book(isbn):
+    book = Book.query.filter_by(isbn=isbn).first_or_404()
+
+    return render_template('book_profile.html', book=book)
+
+@bp.route('/search', methods=['GET','POST'])
+@login_required
+def search():
 
     form = get_SearchForm()
     if request.method == 'POST':  
-        query = form.q.data
-        print (query)
+        query = re.escape(form.q.data)
 
-        return redirect(url_for('main.get_search', query=query))
+        return redirect(url_for('main.search_results', query=query))
 
-    return render_template('get.html', title = 'Get Book', form=form)
+    return render_template('search.html', title = 'search Book', form=form)
 
 
-@bp.route('/get/search/<query>', methods=['GET', 'POST'])
+@bp.route('/search/<query>', methods=['GET', 'POST'])
 @login_required
-def get_search(query):
+def search_results(query):
      
 
-    #search the database for book titles 
-    search = "%{}%".format(query)
 
     #get all the books with titles similar to the statement
-    books = db.session.query(Book).all()
-    print (books)
+    booksDB = db.session.query(Book).all()
+    search_result = dict({})
+    for book in booksDB:
+        score = fuzz.token_sort_ratio(book.title, query) + fuzz.token_sort_ratio(book.author, query) + fuzz.token_sort_ratio(book.subject, query)
+        search_result[book] = score
 
-    return render_template('get_search.html', books = books)
+    search_result = sorted(search_result.items(), key=lambda x: x[1], reverse=True)
+
+    print(search_result)
+    books = []
+    for elem in search_result:
+        books.append(elem[0])
+        
+    
+    
+    return render_template('search_results.html', books = books[:5])
 
 
 @bp.route('/home', methods=['GET', 'POST'])#might not need post

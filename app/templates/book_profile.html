@@ -1,3 +1,5 @@
+{%extends "base.html"%}
+{%block content %}
 
 <div class="container">
 <div class="card flex-row flex-wrap">
@@ -13,10 +15,13 @@
         {% else %}
         <h4 class="card-text text-success"> Available</p>
         {%endif%}
-        <a href="{{url_for('main.book', isbn=book.isbn)}}" class="btn btn-primary">Get book</a>
+        <a href="#" class="btn btn-primary">Get book</a>
+        <a href="#" class="btn btn-primary">Reserve book</a>
         
     </div>
     <div class="w-50"></div>
     
 </div>
 </div>
+
+{%endblock%}

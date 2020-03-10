@@ -1,49 +1,28 @@
 {%extends "base.html"%}
 {%block content%}
-<div class="container">
 
-<div class="row">
-    <div class="col-lg-4">
-        <div class="card " style="width: vmax;height: vmax;">
+
+<div class="row d-flex justify-content-center">
+    <div class="col-lg-2">
+        <div class="card" style="width: vmax;height: vmax;">
             <img class="card-img-top" src="{{url_for('static', filename='get_colour.png')}}" alt="Demo 2" style="width:250px;height:250px;">
             <div class ="card-body">
-                <h5 class="card-title">Get Book(WIP)</h5>
-                <p class="card-text"> 
-                    Get a book currently in the library.
-                </p>
-                <a href="{{url_for('main.get')}}" class="btn btn-primary"> (WIP).</a>
+                <h5 class="card-title">Search</h5>
+                <p class="card-text"> Search for a book in the library</p>
+                <a href="{{url_for('main.search')}}" class="btn btn-primary"> Go</a>
             </div>
         </div>
     </div>
 
-    <div class="col-lg-4">
+    <div class="col-lg-2">
         <div class="card" style="width: vmax;height: vmax;">
             <img class="card-img-top" src="{{url_for('static', filename='pickup_colour.png')}}" alt="Pick Up a Book" style="width:280px;height:280px;">
             <div class ="card-body">
                 <h5 class="card-title">Pick Up a reserved book(WIP)</h5>
-                <p class="card-text"> 
-                      Pick up a resevered book you have reserved.
-                </p>
-                    <a href="{{url_for('main.pickup')}}" class="btn btn-primary"> (WIP).</a>
-                </div>
+                <p class="card-text"> Pick up a book you have reserved.</p>
+                <a href="{{url_for('main.pickup')}}" class="btn btn-primary"> (WIP).</a>
             </div>
-    </div>
-
-    <div class="col-lg-4">
-            <div class="card" style="width: vmax;height: vmax;">
-                <img class="card-img-top" src="{{url_for('static', filename='reserve_colour.png')}}" alt="Reserve a Book" style="width:250px;height:250px;">
-                <div class ="card-body">
-                    <h5 class="card-title">Reserve a book(WIP)</h5>
-                    <p class="card-text"> 
-                          Reserve a book in the library.
-                    </p>
-                        <a href="{{url_for('main.reserve')}}" class="btn btn-primary"> (WIP).</a>
-                    </div>
-                </div>
         </div>
-
-
-
-</div>
+    </div>
 </div>
 {%endblock%}

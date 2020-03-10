@@ -33,19 +33,30 @@ class Book(db.Model):
     __searchable__ = ['title']
 
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(140), unique=True,)
+    title = db.Column(db.String(140), index=True, unique=True)
     author = db.Column(db.String(64)) 
-    label = db.Column(db.String(16), unique=True)#LOC label on the book
+    label = db.Column(db.String(16))#LOC label on the book
     subject = db.Column(db.String(64))
+    isbn = db.Column(db.String(16))
     holder = db.Column(db.Integer, db.ForeignKey('user.id'))# id of the user that has the book
     shelf = db.Column(db.Integer)# shelf the book is on
+    
 
     def __repr__(self):
         return '<Book {}>'.format(self.title)
 
+    def get_pic(self):
+        return "https://pictures.abebooks.com/isbn/"+str(self.isbn)+"-uk-300.jpg"
+
     def get_label(self, book):
         label = self.query.filter_by(name=book).first()
         return label.label
+
+    def reserved(self):
+        if self.holder == "":
+            return False;
+        else:
+            return True;
 
 #dunno how this works yet but tbh its not that important rn
 

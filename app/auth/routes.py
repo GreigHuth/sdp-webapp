@@ -59,7 +59,7 @@ def signup():
         db.session.add(user) # ignore these errors
         db.session.commit()
         flash('Successfully registered!')
-        return redirect(url_for('login'))
+        return redirect(url_for('auth.login'))
 
     return render_template('auth/signup.html', title = 'Sign up', form=form)
 

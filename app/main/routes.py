@@ -49,7 +49,6 @@ def search():
 @login_required
 def search_results(query):
      
-
     #get books from database
     booksDB = db.session.query(Book).all()
     search_result = dict({})
@@ -58,7 +57,8 @@ def search_results(query):
 
         #tokenises the book attributes and uses the levenschtein distance to give each book a score for 
         #   how similar it is to the query
-        score = fuzz.token_sort_ratio(book.title, query) + fuzz.token_sort_ratio(book.author, query) + fuzz.token_sort_ratio(book.subject, query)
+        words = book.title+ " " + book.author + " " + book.subject
+        score = fuzz.token_set_ratio(words, query)
         search_result[book] = score
 
     search_result = sorted(search_result.items(), key=lambda x: x[1], reverse=True)
@@ -70,6 +70,14 @@ def search_results(query):
         
     
     return render_template('search_results.html', books = books[:5])
+
+
+@bp.route('/get/<book>', methods=['GET', 'POST'])
+@login_required
+def get(book):
+    print(book)
+    print(current_user)
+    return render_template('get.html', book=book)
 
 
 @bp.route('/home', methods=['GET', 'POST'])#might not need post

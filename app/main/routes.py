@@ -26,18 +26,19 @@ def user(username):
     return render_template('user.html', user=user)
 
 @bp.route('/book/<isbn>')
-@login_required
 def book(isbn):
     book = Book.query.filter_by(isbn=isbn).first_or_404()
 
     return render_template('book_profile.html', book=book)
 
 @bp.route('/search', methods=['GET','POST'])
-@login_required
 def search():
 
     form = get_SearchForm()
+
     if request.method == 'POST':  
+
+        #remove non-alphannumeric characters to prevent sql injections
         query = re.escape(form.q.data)
 
         return redirect(url_for('main.search_results', query=query))
@@ -45,8 +46,8 @@ def search():
     return render_template('search.html', title = 'search Book', form=form)
 
 
+
 @bp.route('/search/<query>', methods=['GET', 'POST'])
-@login_required
 def search_results(query):
      
     #get books from database
@@ -71,12 +72,36 @@ def search_results(query):
     
     return render_template('search_results.html', books = books[:5])
 
-
-@bp.route('/get/<book>', methods=['GET', 'POST'])
+@bp.route('/confirm/<isbn>', methods=['GET', 'POST'])
 @login_required
-def get(book):
+def confirm(isbn):
+    book = Book.query.filter_by(isbn=isbn).first_or_404()
     print(book)
-    print(current_user)
+
+    if request.method == 'POST':
+        desk = request.form['desk']
+
+        return redirect(url_for('main.get', book=book, desk=desk ))
+
+    return render_template('confirm.html', book=book, max=2)
+
+
+
+@bp.route('/get/', methods=['GET', 'POST'])
+@login_required
+def get():
+    print(book)
+
+    user = current_user
+
+    desk = request.args.get('desk')
+
+    book = request.args.get('book')
+    label = book.label
+    shelf = book.shelf
+
+    # get coords for the robot from the shelf
+
     return render_template('get.html', book=book)
 
 
@@ -91,11 +116,6 @@ def home():
 def pickup():
     return render_template('pickup.html', title = "Pick Up")
 
-
-@bp.route('/reserve', methods=['GET', 'POST'])
-@login_required
-def reserve():
-    return render_template('reserve.html', title="Reserve")
 
 @bp.before_app_request
 def before_request():

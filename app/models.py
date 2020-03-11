@@ -52,6 +52,10 @@ class Book(db.Model):
         label = self.query.filter_by(name=book).first()
         return label.label
 
+    # registers book ownership to
+    def reserve_book(self, user):
+        self.holder = user.id
+
     def reserved(self):
         if self.holder == "":
             return False;

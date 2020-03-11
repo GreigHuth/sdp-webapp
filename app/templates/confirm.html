@@ -10,13 +10,15 @@
         <h4 class="card-title">{{book.title}}</h4>
         <h5 class="card-text"> {{book.author}}</h5>
         <p class="card-text">{{book.subject}}</p>
-        {%if book.reserved()%}
-        <h4 class="card-text text-danger">Not Available</p>
-        {% else %}
-        <h4 class="card-text text-success"> Available</p>
-        {%endif%}
-        <a href="{{url_for('main.confirm', isbn=book.isbn)}}" class="btn btn-primary">Get book</a>
-        <a href="#" class="btn btn-primary">Reserve book</a>
+        <form action="" method="POST">
+            <select name="desk" method="GET" action="">
+                {%for  desk in range(1, max) %}
+                <option value="{{desk}}">{{desk}}</option>
+                {%endfor%}
+                <input type="submit" value="Confirm" name ="desk" class="btn btn-primary">
+            </select>
+         </form>
+        
         
     </div>
     <div class="w-50"></div>

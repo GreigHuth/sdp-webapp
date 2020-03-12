@@ -5,8 +5,7 @@ from flask_login import LoginManager
 from flask_bootstrap import Bootstrap
 from config import Config
 from threading import Thread
-from networking import setupSocket
-from celery import Celery
+from networking import *
 
 #initialise all the libraries the webapp needs
 db = SQLAlchemy()
@@ -16,7 +15,6 @@ login.login_view = 'auth.login'
 bootstrap = Bootstrap()
 
 #init socket
-x = Thread(target=setupSocket)
 
 
 def create_app(config_class=Config):

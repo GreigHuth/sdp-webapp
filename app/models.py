@@ -3,7 +3,6 @@ from flask import current_app, url_for
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from app import db, login
-from app.search import add_to_index, remove_from_index, query_index
 
 
 
@@ -50,7 +49,6 @@ class Shelf(db.Model):
 
 #SQL Schema for Book Table
 class Book(db.Model):
-    __searchable__ = ['title']
 
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(140), index=True, unique=True)

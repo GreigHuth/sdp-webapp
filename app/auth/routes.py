@@ -41,7 +41,8 @@ def login():
 @bp.route('/logout')
 def logout():
     logout_user()
-    return redirect(url_for('login'))
+    print("test")
+    return redirect(url_for('auth.login'))
 
 
 @bp.route('/signup', methods=['GET', 'POST'])

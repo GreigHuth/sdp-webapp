@@ -99,9 +99,6 @@ def get(isbn):
     user = current_user
     desk_no = request.args.get('desk')
     book = Book.query.filter_by(isbn=isbn).first_or_404() 
-    print(user)
-    print(book)
-    print(desk_no)
 
     label = book.label
     shelf = book.shelf 

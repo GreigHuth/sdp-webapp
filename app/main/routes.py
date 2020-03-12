@@ -7,10 +7,9 @@ import re
 import os
 import json
 from app.main.forms import  get_SearchForm
-from app.models import User, Book
+from app.models import User, Book, Desk, Shelf
 from app.main import bp
 from fuzzywuzzy import fuzz
-from jellyfish import levenshtein_distance as ld 
 
 @bp.route('/')
 @bp.route('/index')
@@ -27,12 +26,14 @@ def user(username):
 
     return render_template('user.html', user=user)
 
+#book 
 @bp.route('/book/<isbn>')
 def book(isbn):
     book = Book.query.filter_by(isbn=isbn).first_or_404()
 
     return render_template('book_profile.html', book=book)
 
+#book search page
 @bp.route('/search', methods=['GET','POST'])
 def search():
 
@@ -42,13 +43,14 @@ def search():
 
         #remove non-alphannumeric characters to prevent sql injections
         query = re.escape(form.q.data)
+        query = query.replace(u'\xa0', u' ')
 
         return redirect(url_for('main.search_results', query=query))
 
     return render_template('search.html', title = 'search Book', form=form)
 
 
-
+#returns the search results from the given query
 @bp.route('/search/<query>', methods=['GET', 'POST'])
 def search_results(query):
      
@@ -77,6 +79,9 @@ def search_results(query):
     
     return render_template('search_results.html', books = books[:5])
 
+
+#confirms that the selected book is the desired one and asks 
+# the user to pick a desk to return the book to
 @bp.route('/confirm/<isbn>', methods=['GET', 'POST'])
 @login_required
 def confirm(isbn):
@@ -91,28 +96,43 @@ def confirm(isbn):
 
 
 
+
+#actually runs the code that gets the book
 @bp.route('/get/<isbn>', methods=['GET', 'POST'])
 @login_required
 def get(isbn):
     
-
+    book = Book.query.filter_by(isbn=isbn).first_or_404()
     user = current_user
-    desk_no = request.args.get('desk')
-    book = Book.query.filter_by(isbn=isbn).first_or_404() 
+
+    desk_number = request.args.get('desk')
+    desk = Desk.query.filter_by(id=desk_number).first()
+    
+    desk_dict = row2dict(desk)
+
+    print(desk_dict)
+    
+    print (desk)
+    desk_json = json.dumps(desk_dict)
+
+    #open connection to navigation stuff
+    #send the the json data 
+    #close connection
+
 
     label = book.label
     shelf = book.shelf 
 
-    #open json and load data from it
-    SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
-    json_url = os.path.join(SITE_ROOT, 'locations.json')
-    locations = json.load(open(json_url))
-
-    print(locations["desk-"+desk_no])
-    #un
-    
-
     return render_template('get.html', book=book)
+
+
+def row2dict(row):
+        d = {}
+        for column in row.__table__.columns:
+            d[column.name] = str(getattr(row, column.name))
+
+        return d
+
 
 
 @bp.route('/home', methods=['GET', 'POST'])#might not need post

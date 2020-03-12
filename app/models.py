@@ -6,6 +6,8 @@ from app import db, login
 from app.search import add_to_index, remove_from_index, query_index
 
 
+
+
 # SQL schema for User Table
 class User(UserMixin, db.Model):
 
@@ -28,6 +30,23 @@ class User(UserMixin, db.Model):
     def __repr__(self):
         return '<User {}>'.format(self.username) 
 
+
+class Desk(db.Model):
+
+    id = db.Column(db.Integer, primary_key=True)
+    x = db.Column(db.Float, index=True)
+    y = db.Column(db.Float)
+    angle = db.Column(db.Float)
+
+    def __repr__(self):
+        return '<Desk {}>'.format(self.id)
+
+class Shelf(db.Model):
+
+    id = db.Column(db.Integer, primary_key=True)
+    x = db.Column(db.Float, index=True)
+    y = db.Column(db.Float)
+    angle = db.Column(db.Float)
 
 #SQL Schema for Book Table
 class Book(db.Model):

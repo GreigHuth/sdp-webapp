@@ -3,8 +3,10 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_bootstrap import Bootstrap
-from elasticsearch import Elasticsearch
 from config import Config
+from threading import Thread
+from networking import setupSocket
+from celery import Celery
 
 #initialise all the libraries the webapp needs
 db = SQLAlchemy()
@@ -12,6 +14,10 @@ migrate = Migrate()
 login = LoginManager()
 login.login_view = 'auth.login'
 bootstrap = Bootstrap()
+
+#init socket
+x = Thread(target=setupSocket)
+
 
 def create_app(config_class=Config):
     app = Flask(__name__)
@@ -21,9 +27,7 @@ def create_app(config_class=Config):
     migrate.init_app(app, db)
     login.init_app(app)
     bootstrap.init_app(app)
-    app.elasticsearch = Elasticsearch([app.config['ELASTICSEARCH_URL']]) \
-        if app.config['ELASTICSEARCH_URL'] else None
-
+   
     #load all the blueprints 
     from app.auth import bp as auth_bp
     app.register_blueprint(auth_bp, url_prefix='/auth')

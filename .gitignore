@@ -1,4 +1,5 @@
 .vscode
 .venv
+.venv3
 app/*.pyc
 *.pyc

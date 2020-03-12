@@ -4,6 +4,8 @@ from flask_login import current_user, login_required
 from sqlalchemy import or_
 from app import db
 import re
+import os
+import json
 from app.main.forms import  get_SearchForm
 from app.models import User, Book
 from app.main import bp
@@ -62,10 +64,13 @@ def search_results(query):
         score = fuzz.token_set_ratio(words, query)
         search_result[book] = score
 
+    #sorts the results in descending order
     search_result = sorted(search_result.items(), key=lambda x: x[1], reverse=True)
 
     print(search_result)
     books = []
+
+    #unpack all the book names into a list, not very elegant but it works 
     for elem in search_result:
         books.append(elem[0])
         
@@ -76,31 +81,39 @@ def search_results(query):
 @login_required
 def confirm(isbn):
     book = Book.query.filter_by(isbn=isbn).first_or_404()
-    print(book)
 
     if request.method == 'POST':
         desk = request.form['desk']
 
-        return redirect(url_for('main.get', book=book, desk=desk ))
+        return redirect(url_for('main.get', book=book, isbn=isbn ,desk=desk ))
 
     return render_template('confirm.html', book=book, max=2)
 
 
 
-@bp.route('/get/', methods=['GET', 'POST'])
+@bp.route('/get/<isbn>', methods=['GET', 'POST'])
 @login_required
-def get():
-    print(book)
+def get(isbn):
+    
 
     user = current_user
+    desk_no = request.args.get('desk')
+    book = Book.query.filter_by(isbn=isbn).first_or_404() 
+    print(user)
+    print(book)
+    print(desk_no)
 
-    desk = request.args.get('desk')
-
-    book = request.args.get('book')
     label = book.label
-    shelf = book.shelf
+    shelf = book.shelf 
 
-    # get coords for the robot from the shelf
+    #open json and load data from it
+    SITE_ROOT = os.path.realpath(os.path.dirname(__file__))
+    json_url = os.path.join(SITE_ROOT, 'locations.json')
+    locations = json.load(open(json_url))
+
+    print(locations["desk-"+desk_no])
+    #un
+    
 
     return render_template('get.html', book=book)
 

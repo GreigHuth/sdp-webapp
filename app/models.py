@@ -28,6 +28,7 @@ class User(UserMixin, db.Model):
     def __repr__(self):
         return '<User {}>'.format(self.username) 
 
+
 #SQL Schema for Book Table
 class Book(db.Model):
     __searchable__ = ['title']
@@ -39,7 +40,7 @@ class Book(db.Model):
     subject = db.Column(db.String(64))
     isbn = db.Column(db.String(16))
     holder = db.Column(db.Integer, db.ForeignKey('user.id'))# id of the user that has the book
-    shelf = db.Column(db.Integer)# shelf the book is on
+    shelf = db.Column(db.Integer, db.ForeignKey('shelf.id'))# shelf the book is on
     
 
     def __repr__(self):

@@ -1,0 +1,23 @@
+{
+    "desk-1":{
+      "position": {
+        "x": 0,
+        "y": 0,
+        "angle": 0
+      }
+    },
+    "desk-2":{
+      "position": {
+        "x": 0,
+        "y": 0,
+        "angle": 0
+      }
+    },
+    "shelf-1":{
+      "position": {
+        "x": 0,
+        "y": 0,
+        "angle": 0
+      }
+    }
+  }

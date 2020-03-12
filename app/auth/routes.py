@@ -6,6 +6,10 @@ from app.auth import bp
 from app.auth.forms import LoginForm, SignupForm
 from app.models import User
 
+"""
+Login page, redirects user to page they tried to get to if they tried to access a page that needs login
+there is also a link on this page to allow users to sign up
+"""
 @bp.route('/login', methods=['GET', 'POST'])
 def login():
 
@@ -38,13 +42,10 @@ def login():
     return render_template('auth/login.html', title ='Sign In', form=form)
 
 
-@bp.route('/logout')
-def logout():
-    logout_user()
-    print("test")
-    return redirect(url_for('auth.login'))
 
-
+"""
+signup page, stores a SHA256 hash of tha password (obviously) maybe user a better one but idk
+"""
 @bp.route('/signup', methods=['GET', 'POST'])
 def signup():
     if current_user.is_authenticated:
@@ -64,3 +65,8 @@ def signup():
 
     return render_template('auth/signup.html', title = 'Sign up', form=form)
 
+@bp.route('/logout')
+def logout():
+    logout_user()
+    print("test")
+    return redirect(url_for('auth.login'))

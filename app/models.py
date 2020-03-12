@@ -64,7 +64,7 @@ class Book(db.Model):
     isbn = db.Column(db.String(16))
     holder = db.Column(db.Integer, db.ForeignKey('user.id'))# id of the user that has the book
     shelf = db.Column(db.Integer, db.ForeignKey('shelf.id'))# shelf the book is on
-
+    reserved = db.Column(db.Boolean)
 
     def __repr__(self):
         return '<Book {}>'.format(self.title)

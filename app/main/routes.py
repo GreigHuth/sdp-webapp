@@ -1,4 +1,6 @@
-
+from .networking import Socket
+from threading import Thread
+from config import Config
 from flask import render_template, flash, redirect, url_for, request, g, current_app
 from flask_login import current_user, login_required
 from sqlalchemy import or_
@@ -127,28 +129,71 @@ Finally, runs the code that actually gets the book :P
 @login_required
 def get(isbn):
     
+    #this is ugly but its easy
     book = Book.query.filter_by(isbn=isbn).first_or_404()
-    user = current_user
+    shelf = book.shelf
 
+    #get nav args
     desk_number = request.args.get('desk')
     desk = Desk.query.filter_by(id=desk_number).first()
+    target_desk = json.dumps(row2dict(desk)).encode()
+
+    target_shelf = Shelf.query.filter_by(id=shelf)
+    target_shelf = json.dumps(row2dict(target_shelf))
+
+    #get vision args
+    target_label = book.label
+    labels = list(Book.query.filter_by(shelf=book.shelf).all())
+    target_book = {'target_label':target_label, 'labels':labels, 'shelf':shelf}
+    target_book = json.dumps(target_book).encode 
     
-    desk_dict = row2dict(desk)
-
-    print(desk_dict)
-    
-    print (desk)
-    desk_json = json.dumps(desk_dict)
-
-    #open connection to navigation stuff
-    #send the the json data 
-    #close connection
-
-
-    label = book.label
-    shelf = book.shelf 
+    x = Thread(target=run_demo, args=(target_shelf, target_desk, target_book))
+ 
 
     return render_template('get.html', book=book)
+
+
+"""
+Runs the demo 
+Returns false if the demo fails, true if it is success
+"""
+
+def run_demo(n_msg_shelf, n_msg_desk, v_msg, a_msg):
+    
+    #setup sockets to be used
+    n_socket = Socket(Config['N_HOST'], Config['N_PORT'])
+    v_socket = Socket(Config['V_HOST'], Config['V_PORT'])
+    a_socket = Socket(Config['A_HOST'], Config['A_PORT'])
+
+    n_socket.send(n_msg_shelf)
+    status = n_socket.recv()
+    if status != Config['SUCCESS_MSG']: 
+        print("NAVIGATION CRASHED")
+
+    print("BB has successfully navigated to the shelf")
+
+    v_socket.send(v_msg)
+    status = v_socket.recv()
+    if status != Config['SUCCESS_MSG']: 
+        print("IDENTIFICATION CRASHED")
+        
+    print("BB has successfully identified the book")
+
+    v_socket.send(v_msg)
+    status = v_socket.recv()
+    if status != Config['SUCCESS_MSG']: 
+        print("ARM CRASHED")
+    
+    print("BB has picked up the book and is on its way")
+    
+    n_socket.send(n_msg_desk)
+    status = n_socket.recv()
+    if status != Config['SUCCESS_MSG']: 
+        print("NAVIGATION CRASHED")
+
+    print ("BB has returned")
+
+    
 
 
 

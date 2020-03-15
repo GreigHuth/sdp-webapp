@@ -7,7 +7,7 @@ from threading import Thread
  This class is used to easily set up and manage multiple sockets in the webapp 
  
 """
-class x_socket(object):
+class Socket(object):
 
     def __init__(self, host, port):
         self.host = host
@@ -22,7 +22,7 @@ class x_socket(object):
 
     """
     Recieves data from the other subsystems
-    Returns true if data is recieved correctly
+    Returns the status code from the subsytem
     """
     def recv(self):
         self.s.bind((self.host, self.port))
@@ -42,7 +42,7 @@ class x_socket(object):
                 self.recv_buffer = data 
                 waiting = False
         
-        return True
+        return self.recv_buffer
 
     """
     Sends data through the socket

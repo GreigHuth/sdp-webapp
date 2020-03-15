@@ -7,6 +7,18 @@ class Config(object):
 
     MAX_DESKS = 2 
 
+    V_HOST = "192.168.105.3"
+    V_PORT = 5000
+
+    N_HOST = "pichu"
+    N_PORT = 5001
+
+    A_HOST = "pichu"
+    A_PORT = 5002
+
+    SUCCESS_MSG = 1
+    FAIL_MSG = 0
+    
     #Key config
     SECRET_KEY = os.environ.get('SECRET_KEY') or 'bums'
 

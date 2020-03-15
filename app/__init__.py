@@ -5,6 +5,9 @@ from flask_login import LoginManager
 from flask_bootstrap import Bootstrap
 from config import Config
 from threading import Thread
+import os
+import sys
+sys.path.append(os.path.join(os.path.dirname(os.path.realpath(__file__)), 'main'))
 from networking import *
 
 #initialise all the libraries the webapp needs
